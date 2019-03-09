@@ -33,7 +33,53 @@ namespace Contacts
             NameBox.Focus();
 
         }
-        
+        //Save Button and all the conditions for empty textboxes
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            if (NumberBox.Text == "" && EmailBox.Text == "")
+            {
+                MessageBox.Show("Email or Phone Number cannot be empty!", "ALERT!");
+            }
+            else if (NameBox.Text == "")
+            {
+                MessageBox.Show("Name cannot be empty!", "ALERT!");
+            }
+            //if email textbox is not filled
+            else if (NumberBox.Text == "" && EmailBox.Text != "")
+            {
+                System.IO.File.AppendAllText(namePath, NameBox.Text + "\r\n");
+                System.IO.File.AppendAllText(numberPath, tab + "\r\n");
+                System.IO.File.AppendAllText(emailPath, EmailBox.Text + "\r\n");
+                ClearContent();
+            }
+            //if number textbox is not filled
+            else if (NumberBox.Text != "" && EmailBox.Text == "")
+            {
+                System.IO.File.AppendAllText(namePath, NameBox.Text + "\r\n");
+                System.IO.File.AppendAllText(numberPath, NumberBox.Text + "\r\n");
+                System.IO.File.AppendAllText(emailPath, tab + "\r\n");
+                ClearContent();
+            }
+            else //when all textboxes are filled
+            {
+                System.IO.File.AppendAllText(namePath, NameBox.Text + "\r\n");
+                System.IO.File.AppendAllText(numberPath, NumberBox.Text + "\r\n");
+                System.IO.File.AppendAllText(emailPath, EmailBox.Text + "\r\n");
+                ClearContent();
+            }
+        }
+
+        private void DisplayBtn_Click(object sender, EventArgs e)
+        {
+
+            String names = System.IO.File.ReadAllText(namePath, Encoding.UTF8);
+            String numbers = System.IO.File.ReadAllText(numberPath, Encoding.UTF8);
+            String email = System.IO.File.ReadAllText(emailPath, Encoding.UTF8);
+
+            NameDisplayBox.Text = names;
+            NumberDisplayBox.Text = numbers;
+            EmailDisplayBox.Text = email;
+        }
 
         //Cancel button for disabling the text boxes.
         private void CancelBtn_Click(object sender, EventArgs e)
@@ -65,50 +111,7 @@ namespace Contacts
             SaveBtn.Enabled = true;
         }
 
-        private void SaveBtn_Click(object sender, EventArgs e)
-        {
-            if (NumberBox.Text == "" && EmailBox.Text == "")
-            {
-                MessageBox.Show("Email or Phone Number cannot be empty!", "ALERT!");
-            }
-            else if (NameBox.Text == "")
-            {
-                MessageBox.Show("Name cannot be empty!", "ALERT!");
-            }
-            else if (NumberBox.Text == "" && EmailBox.Text != "")
-            {
-                System.IO.File.AppendAllText(namePath, NameBox.Text + "\r\n");
-                System.IO.File.AppendAllText(numberPath, tab + "\r\n");
-                System.IO.File.AppendAllText(emailPath, EmailBox.Text + "\r\n");
-                ClearContent();
-            }
-            else if (NumberBox.Text != "" && EmailBox.Text == "")
-            {
-                System.IO.File.AppendAllText(namePath, NameBox.Text + "\r\n");
-                System.IO.File.AppendAllText(numberPath, NumberBox.Text + "\r\n");
-                System.IO.File.AppendAllText(emailPath, tab + "\r\n");
-                ClearContent();
-            }
-            else
-            {
-                System.IO.File.AppendAllText(namePath, NameBox.Text + "\r\n");
-                System.IO.File.AppendAllText(numberPath, NumberBox.Text + "\r\n");
-                System.IO.File.AppendAllText(emailPath, EmailBox.Text + "\r\n");
-                ClearContent();
-            }
-        }
-
-        private void DisplayBtn_Click(object sender, EventArgs e)
-        {
-
-            String names = System.IO.File.ReadAllText(namePath, Encoding.UTF8);
-            String numbers = System.IO.File.ReadAllText(numberPath, Encoding.UTF8);
-            String email = System.IO.File.ReadAllText(emailPath, Encoding.UTF8);
-
-            NameDisplayBox.Text = names;
-            NumberDisplayBox.Text = numbers;
-            EmailDisplayBox.Text = email;
-        }
+        
 
     }
 }
